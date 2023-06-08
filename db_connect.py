@@ -7,11 +7,11 @@ class DbDAO():
 
         """
         
-        self.user = 'michele'
-        self.pwd = 'loup'
-        self.host = 'projet-slam.freeboxos.fr'
-        self.database = 'projet'
-        self.port = 3306
+        self.user = ''
+        self.pwd = ''
+        self.host = ''
+        self.database = ''
+        self.port = 
     
     def connect(self):
         """Connexion à la base de données
