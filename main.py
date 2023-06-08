@@ -59,11 +59,6 @@ else :
 if (error != ''):
     print(error)
 
-
-# print(config)
-
-
-
 def test(duree, port, host):
     # Début Saturation
     print(f'------------------------ Début de la saturation du port {port} ------------------------')
@@ -91,4 +86,3 @@ if (error == ''):
         data[port] = { "id": config[f"{port}_id"], "mesures": port_mesures }
     print(data) # pour le moment on affiche. Plus tard, insertion dans la base de données
     db_conn.sendData(data)
-

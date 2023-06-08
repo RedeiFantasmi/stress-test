@@ -13,37 +13,21 @@ def ping(duree, port, host):
     Returns:
         list: liste des temps de réponse (en ms) pendant la période désirée
     """
-
-    timer = time.time() + duree # timer = heure actuelle + durée (en secondes)
+    
+    count = 0 # nombre de ping
     data = [] # liste vide dans laquelle on stockera nos temps de réponse
-    while timer > time.time(): # tant que heure actuelle < timer
+    while count < duree: # tant que nombre de ping voulu non atteint
         # on exécute dans la console la commande pour faire un ping tcp
         ping = subprocess.run(f'python {getcwd()}/tcpping.py {host} {port} 1', shell=True, capture_output=True)
-        print(f'{getcwd()}/tcpping.py {host} {port} 1')
         try:
-            output = ping.stdout # on récupère la sortie dans la console
-            response_time = output.decode().split("time=")[1].split(" ")[0] # on récupère uniquement la partie qui nous intéresse (temps de réponse en ms)
+            response_time = ping.stdout.decode().split("time=")[1].split(" ")[0] # on récupère la sortie dans la console en filtrant pour ne récupérer que le temps de réponse
+            print(f'Temps de réponse : {response_time} ms') # On affiche le résultat
             data.append(response_time) # on ajoute le temps de réponse dans la liste
-            time.sleep(1) # on fait une pause d'une seconde
-        except IndexError as error:
-            # si erreur de connexion, on renvoi erreur et on arrête le script
-            data = f"Erreur de connexion à l'adresse {host}:{port}"
+            time.sleep(1) # on marque un temps d'arrêt d'une seconde
+        except IndexError:
+            # si erreur de connexion
+            print(f"Erreur de connexion à l'adresse {host}:{port}") # on affiche qu'il y a eu une erreur
+            data.append(-1) # on ajoute -1 comme temps de réponse
             break
+        count += 1
     return data
-
-# def ping(duree, port, host):
-#     count = 0
-#     maxCount = duree # timer = heure actuelle + durée (en secondes)
-#     data = []
-#     while count < maxCount: # tant que heure actuelle < timer
-#         ping = subprocess.run(f'{getcwd()}/tcpping.py {host} {port} 1', shell=True, capture_output=True)
-#         try:
-#             response_time = ping.stdout.decode().split("time=")[1].split(" ")[0]
-#             # print(f'Response time: {response_time} ms')
-#             data.append(response_time)
-#             time.sleep(1)
-#         except IndexError:
-#             data = f"Erreur de connexion à l'adresse {host}:{port}"
-#             break
-#         count += 1
-#     return data
